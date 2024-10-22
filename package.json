@@ -1,0 +1,24 @@
+{
+	"name": "miqtt",
+	"version": "1.0.0",
+	"description": "",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build-run": "tsc && node dist/src/index.js",
+		"build": "tsc",
+		"lint": "npx @biomejs/biome check --fix --unsafe"
+	},
+	"author": "jserrats.xyz",
+	"license": "ISC",
+	"dependencies": {
+		"@julusian/midi": "^3.6.1",
+		"dotenv": "^16.4.5",
+		"mqtt-assistant": "github:jserrats/mqtt-assistant",
+		"node-gyp": "^10.2.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.3",
+		"typescript": "^5.4.5"
+	}
+}
