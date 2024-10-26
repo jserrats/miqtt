@@ -2,7 +2,5 @@ services:
     miqtt:
       build: .
       devices:
-        - /dev/midi5:/dev/midi5
         - /dev/snd
       env_file: .env
-      # privileged: true
