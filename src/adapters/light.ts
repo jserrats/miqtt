@@ -23,18 +23,13 @@ export class ZigbeeLightAdapter implements Adapter {
                 setTimeout(() => {
                     if (this.pressed) {
                         this.altMode = true
-                        this.launchpad.faderOn(Math.ceil(this.component.brightness / 32))
-                        this.addFaderCallbacks((heightSelected) => {
-                            this.component.setOn({ brightness: heightBrigtness[heightSelected] }),
-                                this.launchpad.faderOn(heightSelected + 1)
-                        })
+                        this.enterHoldMode()
                     }
                 }, 200)
             } else {
                 this.pressed = false
                 if (this.altMode) {
-                    this.launchpad.faderOff()
-                    this.clearFaderCallbacks()
+                    this.exitHoldMode()
                     this.altMode = false
                 } else {
                     this.component.toggle();
@@ -47,10 +42,24 @@ export class ZigbeeLightAdapter implements Adapter {
         });
     }
 
+    protected enterHoldMode() {
+        this.launchpad.faderOn(Math.ceil(this.component.brightness / 32))
+        this.addFaderCallbacks((heightSelected) => {
+            this.component.setOn({ brightness: heightBrigtness[heightSelected] }),
+                this.launchpad.faderOn(heightSelected + 1)
+        })
+    }
+
+    protected exitHoldMode() {
+        this.launchpad.faderOff()
+        this.clearFaderCallbacks()
+        this.launchpad.optionsOff()
+    }
+
     private addFaderCallbacks(callback: (heightSelected: number) => void) {
         for (let i = 0; i < 8; i++) {
-            this.launchpad.addCallback({ x: 8, y: i }, () => {
-                callback(i)
+            this.launchpad.addCallback({ x: 8, y: i }, (state) => {
+                if (state) callback(i)
             })
         }
     }
@@ -59,6 +68,21 @@ export class ZigbeeLightAdapter implements Adapter {
             this.launchpad.clearCallbacks({ x: 8, y: i })
         }
     }
+
+    protected addOptionCallbacks(callback: (optionSelected: number) => void) {
+        for (let i = 0; i < 8; i++) {
+            this.launchpad.addCallback({ x: i, y: 8 }, (state) => {
+                if (state) callback(i)
+            })
+        }
+    }
+
+    protected clearOptionCallbacks() {
+        for (let i = 0; i < 8; i++) {
+            this.launchpad.clearCallbacks({ x: i, y: 8 })
+        }
+    }
+
     private updatePadColor(state: boolean) {
         if (state === undefined) {
             this.launchpad.setSolidColor(this.pad, Color.STATE_UNDEFINED);
@@ -69,6 +93,33 @@ export class ZigbeeLightAdapter implements Adapter {
             );
         }
     }
+}
+
+export class TemperatureLightZigbeeAdapter extends ZigbeeLightAdapter {
+    component: zigbee.TemperatureLightZigbee;
+
+    constructor(
+        component: zigbee.TemperatureLightZigbee,
+        launchpad: Launchpad,
+        padXY: PadXY,
+    ) {
+        super(component, launchpad, padXY)
+        this.component = component
+    }
+
+    protected enterHoldMode() {
+        super.enterHoldMode()
+        this.launchpad.optionsOn([Color.WARM_WHITE, Color.WHITE])
+        this.addOptionCallbacks((optionSelected: number) => {
+            optionSelected == 0 ? this.component.setColorTemp(450) : this.component.setColorTemp(251)
+        })
+    }
+    protected exitHoldMode() {
+        super.exitHoldMode()
+        this.launchpad.optionsOff()
+        this.clearOptionCallbacks()
+    }
+
 }
 
 const heightBrigtness = [2, 36, 72, 109, 145, 182, 218, 254]

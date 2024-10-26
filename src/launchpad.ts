@@ -64,6 +64,18 @@ export class Launchpad {
 			this.setSolidColor({ x: 8, y: i }, Color.OFF)
 		}
 	}
+
+	public optionsOn(options: Array<Color>) {
+		for (let i = 0; i < options.length; i++) {
+			this.setSolidColor({ x: i, y: 8 }, options[i])
+		}
+	}
+
+	public optionsOff() {
+		for (let i = 0; i < 8; i++) {
+			this.setSolidColor({ x: i, y: 8 }, Color.OFF)
+		}
+	}
 }
 
 export type PadXY = {
@@ -73,6 +85,7 @@ export type PadXY = {
 
 export enum Color {
 	WHITE = 3,
+	WARM_WHITE = 108,
 	PINK = 53,
 	RED = 120,
 	BLUE = 45,
