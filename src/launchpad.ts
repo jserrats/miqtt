@@ -1,13 +1,24 @@
 const midi = require("@julusian/midi");
+import { telegram } from "mqtt-assistant";
 
 export class Launchpad {
 	private output = new midi.Output();
 	private input = new midi.Input();
 	private callbacks: Record<number, Array<(...rest: any[]) => void>> = {};
+	private firstPortcount: number;
 
 	constructor() {
 		this.output.openPort(2);
 		this.input.openPort(2);
+		
+		this.firstPortcount = this.output.getPortCount()
+		console.log(this.firstPortcount)
+		setInterval(() => {
+			if (this.firstPortcount !== this.output.getPortCount()) {
+				telegram.log("Launchpad disconnected", "warning")
+				process.exit(1)
+			}
+		}, 1000);
 
 		this.input.ignoreTypes(false, false, false);
 
