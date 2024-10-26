@@ -3,7 +3,7 @@ const midi = require("@julusian/midi");
 export class Launchpad {
 	private output = new midi.Output();
 	private input = new midi.Input();
-	private callbacks: Record<number, (...rest: any[]) => void> = {};
+	private callbacks: Record<number, Array<(...rest: any[]) => void>> = {};
 
 	constructor() {
 		this.output.openPort(2);
@@ -37,7 +37,11 @@ export class Launchpad {
 	}
 
 	public addCallback(pad: PadXY, callback: (state?: boolean) => void) {
-		this.callbacks[this.translate(pad)] = callback;
+		if (typeof this.callbacks[this.translate(pad)] === 'undefined') {
+			this.callbacks[this.translate(pad)] = [callback];
+		} else {
+			this.callbacks[this.translate(pad)].push(callback);
+		}
 	}
 
 	public clearCallbacks(pad: PadXY) {
@@ -46,7 +50,7 @@ export class Launchpad {
 
 	private routeInput(padN: number, pressed: boolean) {
 		if (this.callbacks[padN] !== undefined) {
-			this.callbacks[padN](pressed);
+			this.callbacks[padN].forEach(callback => { callback(pressed) });
 		}
 	}
 
