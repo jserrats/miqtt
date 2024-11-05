@@ -47,3 +47,4 @@ new TemperatureLightZigbeeAdapter(new zigbee.TemperatureLightZigbee("bedroom_rig
 new SwitchAdapter(new zigbee.PowerE1603("bedroom_fan"), launchpad, { x: 2, y: 7 })
 new SwitchAdapter(new zigbee.PowerE1603("mosquito_power"), launchpad, { x: 3, y: 7 })
 new SwitchAdapter(new esphome.LightESPHome("bedroom", "nightstand_led"), launchpad, { x: 4, y: 7 })
+new SwitchAdapter(new zigbee.PowerZigbee("bedroom_mood_light"), launchpad, { x: 5, y: 7 })
