@@ -17,6 +17,7 @@ new SwitchAdapter(new zigbee.PowerE1603("3dprinter"), launchpad, { x: 3, y: 0 })
 new SwitchAdapter(new zigbee.PowerE1603("desk_power"), launchpad, { x: 4, y: 0 })
 new ZigbeeLightAdapter(new zigbee.LightZigbee("studio_shelf_light"), launchpad, { x: 5, y: 0 })
 new BinarySensorAdapter(new zigbee.ClosureSensorZigbee("studio_window_closure_sensor"), launchpad, { x: 7, y: 0 })
+new SwitchAdapter(new zigbee.PowerE1603("desktop_light"), launchpad, { x: 3, y: 1 })
 new PublishMqttAdapter(launchpad, { topic: "homeassistant/custom/spotify", payload: "play" }, { x: 4, y: 1 })
 new PublishMqttAdapter(launchpad, { topic: "homeassistant/custom/spotify", payload: "next" }, { x: 5, y: 1 })
 
