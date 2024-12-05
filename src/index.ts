@@ -20,6 +20,9 @@ new BinarySensorAdapter(new zigbee.ClosureSensorZigbee("studio_window_closure_se
 new SwitchAdapter(new zigbee.PowerE1603("desktop_light"), launchpad, { x: 3, y: 1 })
 new PublishMqttAdapter(launchpad, { topic: "homeassistant/custom/spotify", payload: "play" }, { x: 4, y: 1 })
 new PublishMqttAdapter(launchpad, { topic: "homeassistant/custom/spotify", payload: "next" }, { x: 5, y: 1 })
+new SwitchAdapter(new zigbee.PowerZigbee("bluetooth_audio_input"), launchpad, { x: 4, y: 2 })
+new SwitchAdapter(new zigbee.PowerZigbee("	bluetooth_audio_input"), launchpad, { x: 5, y: 2 })
+
 
 // music
 new TemperatureLightZigbeeAdapter(new zigbee.TemperatureLightZigbee("mood_music_light"), launchpad, { x: 0, y: 1 })
@@ -41,6 +44,7 @@ new PublishMqttAdapter(launchpad, { topic: "homeassistant/custom/clean/kitchen",
 
 // living room
 new SwitchAdapter(new zigbee.PowerE1603("livingroom_smooth_lights"), launchpad, { x: 0, y: 6 })
+new SwitchAdapter(new esphome.LightESPHome("bedroom", "nightstand_led"), launchpad, { x: 1, y: 6 })
 
 // bedroom 
 new TemperatureLightZigbeeAdapter(new zigbee.TemperatureLightZigbee("bedroom_left_light"), launchpad, { x: 0, y: 7 })
