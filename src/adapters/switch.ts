@@ -1,14 +1,13 @@
-import type { EventEmitter } from "node:events";
 import type { Switch } from "mqtt-assistant/src/components/interfaces/switch";
 import { Color, type Launchpad, type PadXY } from "../launchpad";
 
 export class SwitchAdapter {
-	component: SwitchableComponent;
+	component: Switch;
 	pad: PadXY;
 	launchpad: Launchpad;
 
 	constructor(
-		component: SwitchableComponent,
+		component: Switch,
 		launchpad: Launchpad,
 		padXY: PadXY,
 	) {
@@ -21,7 +20,7 @@ export class SwitchAdapter {
 			}
 		});
 		this.updatePadColor(component.state);
-		this.component.on("state", (state: boolean) => {
+		this.component.on(this.component.events.state, (state: boolean) => {
 			this.updatePadColor(state);
 		});
 	}
@@ -37,5 +36,3 @@ export class SwitchAdapter {
 		}
 	}
 }
-
-type SwitchableComponent = Switch & EventEmitter;

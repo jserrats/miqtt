@@ -1,16 +1,16 @@
 import { Color, type Launchpad, type PadXY } from "../launchpad";
-import { zigbee } from "mqtt-assistant";
 import { Adapter } from "./adapter";
+import { TemperatureLightZigbee, BrightLightZigbee } from "mqtt-assistant/dist/components/zigbee/devices/switches/base";
 
 export class ZigbeeLightAdapter implements Adapter {
-    component: zigbee.LightZigbee;
+    component: BrightLightZigbee;
     pad: PadXY;
     launchpad: Launchpad;
     pressed: boolean = false
     altMode: boolean = false
 
     constructor(
-        component: zigbee.LightZigbee,
+        component: BrightLightZigbee,
         launchpad: Launchpad,
         padXY: PadXY,
     ) {
@@ -37,13 +37,13 @@ export class ZigbeeLightAdapter implements Adapter {
             }
         });
         this.updatePadColor(component.state);
-        this.component.on("state", (state: boolean) => {
+        this.component.on(this.component.events.state, (state: boolean) => {
             this.updatePadColor(state);
         });
     }
 
     protected enterHoldMode() {
-        this.launchpad.faderOn(Math.ceil(this.component.brightness / 32))
+        this.launchpad.faderOn(Math.ceil(this.component.brightness.state / 32))
         this.addFaderCallbacks((heightSelected) => {
             this.component.setOn({ brightness: heightBrigtness[heightSelected] }),
                 this.launchpad.faderOn(heightSelected + 1)
@@ -96,10 +96,10 @@ export class ZigbeeLightAdapter implements Adapter {
 }
 
 export class TemperatureLightZigbeeAdapter extends ZigbeeLightAdapter {
-    component: zigbee.TemperatureLightZigbee;
+    component: TemperatureLightZigbee;
 
     constructor(
-        component: zigbee.TemperatureLightZigbee,
+        component: TemperatureLightZigbee,
         launchpad: Launchpad,
         padXY: PadXY,
     ) {
@@ -111,7 +111,7 @@ export class TemperatureLightZigbeeAdapter extends ZigbeeLightAdapter {
         super.enterHoldMode()
         this.launchpad.optionsOn([Color.WARM_WHITE, Color.WHITE])
         this.addOptionCallbacks((optionSelected: number) => {
-            optionSelected == 0 ? this.component.setColorTemp(450) : this.component.setColorTemp(251)
+            optionSelected == 0 ? this.component.colorTemp.set(450) : this.component.colorTemp.set(251)
         })
     }
     protected exitHoldMode() {
