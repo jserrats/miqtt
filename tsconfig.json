@@ -1,11 +1,11 @@
 {
 	"compilerOptions": {
-		"target": "es6",
+		"target": "es2022",
 		"module": "commonjs",
 		"outDir": "./dist",
-		"strict": true,
 		"esModuleInterop": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"declaration": true
 	},
 	"include": ["src/*.ts", "*.json", "src/adapters/switch.ts"]
 	//"exclude": ["node_modules"]

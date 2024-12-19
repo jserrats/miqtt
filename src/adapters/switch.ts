@@ -6,11 +6,7 @@ export class SwitchAdapter {
 	pad: PadXY;
 	launchpad: Launchpad;
 
-	constructor(
-		component: Switch,
-		launchpad: Launchpad,
-		padXY: PadXY,
-	) {
+	constructor(component: Switch, launchpad: Launchpad, padXY: PadXY) {
 		this.component = component;
 		this.pad = padXY;
 		this.launchpad = launchpad;

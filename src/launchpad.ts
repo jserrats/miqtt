@@ -10,13 +10,13 @@ export class Launchpad {
 	constructor() {
 		this.output.openPort(2);
 		this.input.openPort(2);
-		
-		this.firstPortcount = this.output.getPortCount()
-		console.log(this.firstPortcount)
+
+		this.firstPortcount = this.output.getPortCount();
+		console.log(this.firstPortcount);
 		setInterval(() => {
 			if (this.firstPortcount !== this.output.getPortCount()) {
-				telegram.log("Launchpad disconnected", "warning")
-				process.exit(1)
+				telegram.log("Launchpad disconnected", "warning");
+				process.exit(1);
 			}
 		}, 1000);
 
@@ -24,7 +24,7 @@ export class Launchpad {
 
 		this.input.on("message", (deltaTime: number, message: Array<number>) => {
 			console.log(`m: ${message} d: ${deltaTime}`);
-			this.routeInput(message[1], message[2] == 127);
+			this.routeInput(message[1], message[2] === 127);
 		});
 
 		this.setProgrammerMode();
@@ -48,7 +48,7 @@ export class Launchpad {
 	}
 
 	public addCallback(pad: PadXY, callback: (state?: boolean) => void) {
-		if (typeof this.callbacks[this.translate(pad)] === 'undefined') {
+		if (typeof this.callbacks[this.translate(pad)] === "undefined") {
 			this.callbacks[this.translate(pad)] = [callback];
 		} else {
 			this.callbacks[this.translate(pad)].push(callback);
@@ -61,30 +61,34 @@ export class Launchpad {
 
 	private routeInput(padN: number, pressed: boolean) {
 		if (this.callbacks[padN] !== undefined) {
-			this.callbacks[padN].forEach(callback => { callback(pressed) });
+			this.callbacks[padN].forEach((callback) => {
+				callback(pressed);
+			});
 		}
 	}
 
 	public faderOn(height: number) {
 		for (let i = 0; i < 8; i++) {
-			i < height ? this.setSolidColor({ x: 8, y: i }, Color.PINK) : this.setSolidColor({ x: 8, y: i }, Color.OFF)
+			i < height
+				? this.setSolidColor({ x: 8, y: i }, Color.PINK)
+				: this.setSolidColor({ x: 8, y: i }, Color.OFF);
 		}
 	}
 	public faderOff() {
 		for (let i = 0; i < 8; i++) {
-			this.setSolidColor({ x: 8, y: i }, Color.OFF)
+			this.setSolidColor({ x: 8, y: i }, Color.OFF);
 		}
 	}
 
 	public optionsOn(options: Array<Color>) {
 		for (let i = 0; i < options.length; i++) {
-			this.setSolidColor({ x: i, y: 8 }, options[i])
+			this.setSolidColor({ x: i, y: 8 }, options[i]);
 		}
 	}
 
 	public optionsOff() {
 		for (let i = 0; i < 8; i++) {
-			this.setSolidColor({ x: i, y: 8 }, Color.OFF)
+			this.setSolidColor({ x: i, y: 8 }, Color.OFF);
 		}
 	}
 }
