@@ -8,7 +8,7 @@ COPY --chown=node:node src/ ./src
 
 RUN npm install && npm run build
 
-FROM node:20 as production
+FROM node:20 AS production
 
 RUN apt-get update && apt-get install -y libasound2 libasound2-dev gcc python3 alsa-utils
 
