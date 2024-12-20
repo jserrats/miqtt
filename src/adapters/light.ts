@@ -115,8 +115,8 @@ export class TemperatureLightZigbeeAdapter extends ZigbeeLightAdapter {
 		this.launchpad.optionsOn([Color.WARM_WHITE, Color.WHITE]);
 		this.addOptionCallbacks((optionSelected: number) => {
 			optionSelected === 0
-				? this.component.colorTemp.set(450)
-				: this.component.colorTemp.set(251);
+				? this.component.colorTemp.set(this.component.colorTemp.max)
+				: this.component.colorTemp.set(this.component.colorTemp.min);
 		});
 	}
 	protected exitHoldMode() {
