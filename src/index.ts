@@ -3,8 +3,10 @@ import { assistant, esphome, zigbee } from "mqtt-assistant";
 import { BinarySensorAdapter } from "./adapters/binary-sensor";
 import {
 	TemperatureLightZigbeeAdapter,
-	ZigbeeLightAdapter,
+	ZigbeeLightAdapter
 } from "./adapters/light";
+
+import { ButtonAdapter } from "./adapters/button";
 import { PublishMqttAdapter } from "./adapters/publish";
 import { SwitchAdapter } from "./adapters/switch";
 import { Launchpad } from "./launchpad";
@@ -65,6 +67,16 @@ new PublishMqttAdapter(
 	{ x: 5, y: 1 },
 );
 
+new ButtonAdapter(
+	launchpad,
+	new esphome.ButtonESPHome("standing-desk", "stand"),
+	{ x: 2, y: 2 },
+);
+new ButtonAdapter(
+	launchpad,
+	new esphome.ButtonESPHome("standing-desk", "sit"),
+	{ x: 3, y: 2 },
+);
 new SwitchAdapter(
 	new zigbee.switches.XMSJ("bluetooth_audio_input"),
 	launchpad,
