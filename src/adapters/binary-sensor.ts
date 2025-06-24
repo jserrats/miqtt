@@ -27,7 +27,7 @@ export class BinarySensorAdapter implements Adapter {
 		} else {
 			this.launchpad.setSolidColor(
 				this.pad,
-				state ? Color.PURPLE : Color.ORANGE,
+				state ? Color.LIGHT_GREEN : Color.LIGHT_RED,
 			);
 		}
 	}
